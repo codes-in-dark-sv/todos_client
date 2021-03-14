@@ -14,6 +14,7 @@ const fillform = ({type, setAction, reload}) =>{
       const [msg , setMessage] = useState("");
       const [textValue, setTextValue] = useState("");
       const [limit, setLimitMsg] = useState("") 
+      
       const formSubmit=(data)=>{
             data.text=textValue
             addTodo(data).then(response => {
@@ -37,7 +38,6 @@ const fillform = ({type, setAction, reload}) =>{
             var val = e.target.value
             var l = val.length
             if(l<=140){
-                  console.log(val)
                   if(val.substr(-1).match(/[^a-zA-Z0-9 ]/g))
                   { 
                         val = val.substr(0,l-1)

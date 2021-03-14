@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {date_parser, text_parser} from './parsers'
+import {date_parser} from './parsers'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -66,7 +66,6 @@ const content = (type, value) =>{
 
 const TodoROW=({row, shouldEdit, del})=>{
       const [open, setOpen] = useState(false);
-      console.log(row.text)
       return ( 
             <>
             <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
@@ -93,10 +92,10 @@ const TodoROW=({row, shouldEdit, del})=>{
                 })}
               </TableRow>
               <TableRow>
-                  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={20}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box width="50%" bgcolor="grey.300" p={1} my={0.5}>
-                              <p style={{wordSpacing:"0px"}}>{text_parser(row["text"])}</p>
+                        <Box width="50%" bgcolor="grey.300" p={1} my={0.75}>
+                              {row["text"]}
                         </Box>
                     </Collapse>
                 </TableCell>

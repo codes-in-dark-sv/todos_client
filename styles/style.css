@@ -23,22 +23,6 @@ input[type=number]::-webkit-outer-spin-button {
       right:4px
 }
 
-.heading{
-      margin-top:20px;
-      margin-bottom: 40px;
-     
-}
-.heading #about{
-      font-size: 30px;
-}
-.heading #action{
-      position: relative;
-      margin-left: 80%;
-}
-
-#action,#about{
-      display: inline;
-}
 .text-area-style{
       border: 2px solid gray;
       min-width: 450px;
@@ -49,3 +33,46 @@ input[type=number]::-webkit-outer-spin-button {
 .text-area-style:focus{
       outline: none
 }
+
+#inside-page{
+    margin-top: 100px
+}
+
+/* Serach bar styling */
+
+.search-header{
+      background-color: #6495ED;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 80px;
+      display: inline-block;
+  }
+   
+.search-header .header-content{
+      margin-left:5%;
+      margin-top: 20px;
+  }
+  #search-input{
+        padding-left: 10%
+  }
+   
+ #head{
+      font-size: 40px;
+  } 
+   
+  .inline{
+        display: inline;
+  }
+
+  #action{
+        margin-left: 10%;
+        padding: 10px
+  }
+  #search-style{
+        min-width: 500px;
+        height: 15px;
+
+       
+  }

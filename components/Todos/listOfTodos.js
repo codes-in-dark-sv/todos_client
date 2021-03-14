@@ -16,25 +16,39 @@ import ShowROW, {columns} from './todoRow';
 const useStyles = makeStyles({
   root: {
     width: '100%',
+    position:"relative",
+    backfaceVisibility:"1"
   },
   container: {
-    maxHeight: 440,
+    position:"relative",
+    minHeight:"500px",
+
   },
+  fromTop:{
+    overflow:"hidden",
+  }
 });
 
-const  TodoList = ({data, reload}) => {
+const  TodoList = ({data, query, setSearch,reload}) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [toEdit, setEdit] = React.useState("");
-  const [rowsPerPage, setRowsPerPage] = React.useState(7);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [msg , setMessage] = useState("");
+  const [filterData, setFilter]= useState(data);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
   useEffect(()=>{
-  },[data, msg])
-
+    if(msg!=""){
+      setTimeout(function(){ setMessage("") }, 3000);
+    }
+  },[filterData, msg])
+  useEffect(()=>{
+    if(data.length!=0)
+      setFilter(data.filter((temp)=>{return (temp.title.toLowerCase()).indexOf(query)!=-1 }))
+  },[query])
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
@@ -50,9 +64,9 @@ const  TodoList = ({data, reload}) => {
     reload()
   }
 
-  if(data.length!=0){
+  if(filterData.length!=0){
       return (
-        <div>
+        <div className={classes.fromTop}>
         <Dialog open={msg!==""}>
               <DialogTitle><b>Message</b></DialogTitle>
               <Divider></Divider>
@@ -72,7 +86,6 @@ const  TodoList = ({data, reload}) => {
         
         
         <Paper className={classes.root}>
-          <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
@@ -88,14 +101,13 @@ const  TodoList = ({data, reload}) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                { filterData && filterData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                    return (<ShowROW row={row} shouldEdit={setEdit} del={remove}/>)
                 })}
               </TableBody>
             </Table>
-          </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[7, 14, 28, 49, 100]}
+            rowsPerPageOptions={[5, 10, 15, 20, 30, 40]}
             component="div"
             count={data.length}
             rowsPerPage={rowsPerPage}

@@ -33,7 +33,6 @@ export const getTodos = () => {
  
  
 export const addTodo = (newTodo) => {
-        console.log(newTodo, "save todo")
         return fetch(`${process.env.NEXT_PUBLIC_API}/create`, {
             method: 'POST',
             headers: {
