@@ -16,3 +16,18 @@ export const date_parser = (myDate) =>{
       }
       return obj.hrs+":"+obj.mins+", "+obj.date+"-"+obj.month+"-"+obj.year
 } 
+
+export const text_parser = (text)=>{
+      var modify_text = ""
+      if(text.length>40){
+            for(var i = 0; i< text.length ; i++){
+                  modify_text+=text[i]
+                  if(i%30 && i>1){
+                        modify_text+="\n"
+                  }
+            }
+            return modify_text
+      } 
+      return text
+      
+}

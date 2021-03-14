@@ -9,52 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import {TableRow} from '@material-ui/core';
 import { removeTodo } from '../../actions/todos_actions';
-import { Box, Dialog, DialogTitle, TextField,Divider,DialogContent, DialogActions, IconButton, Button } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import { Box, Dialog, DialogTitle,Typography, TextField,Divider,DialogContent, DialogActions, Button } from '@material-ui/core';
 import EditDetails from './editDetails'
-import {date_parser} from './parsers'
-const columns = [
-  {
-    id: 'title',
-    label: 'Todo Title',
-    minWidth: 100,
-    align: 'left',
-},
-  { id: 'text', label: 'About todo', minWidth: 170 },
-  {
-    id:'status',
-    label:"Status",
-    minWidth: 100,
-    align: 'center',
-  },
-  {
-    id:'created_at',
-    label:"Created At",
-    minWidth: 100,
-    align: 'center',
-  },
-  {
-    id:'updated_at',
-    label:"Updated At",
-    minWidth: 100,
-    align: 'center',
-  },
-  {
-    id:'edit',
-    label:"Edit Todo",
-    minWidth: 100,
-    align: 'center',
-  },
-  {
-    id:'delete',
-    label:"Delete Todo",
-    minWidth: 100,
-    align: 'center',
-  }
-
-
-];
+import ShowROW, {columns} from './todoRow';
 
 const useStyles = makeStyles({
   root: {
@@ -65,34 +22,34 @@ const useStyles = makeStyles({
   },
 });
 
-const  StickyHeadTable = ({data, reload}) => {
-
+const  TodoList = ({data, reload}) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [toEdit, setEdit] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(7);
-  const [msg , setMessage] = useState("")
-
-  const remove=(row)=>{
-    removeTodo(row).then((response)=>{
-      setMessage(response.msg)
-    }).catch((err)=>{
-      setMessage(err.msg)
-    })
-    reload()
-
-  }
+  const [msg , setMessage] = useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
   useEffect(()=>{
-    console.log(msg)
   },[data, msg])
+
+
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(event.target.value);
     setPage(0);
   };
+  
+  const remove=(row)=>{
+    removeTodo(row).then((response)=>{
+          setMessage(response.msg)
+    }).catch((err)=>{
+          setMessage(err.msg)
+    })
+    reload()
+  }
+
   if(data.length!=0){
       return (
         <div>
@@ -101,8 +58,7 @@ const  StickyHeadTable = ({data, reload}) => {
               <Divider></Divider>
               <DialogContent>
                     <Box p={2}>
-
-                          <h4>  Todo {msg=="impossible"? "can't be deleted until marked completed": "deleted successfully !"}</h4>
+                          <h4>Todo {msg=="impossible"? "can't be deleted until marked completed": "deleted successfully !"}</h4>
                     </Box>
               </DialogContent>
               <Box display="flex">
@@ -126,36 +82,14 @@ const  StickyHeadTable = ({data, reload}) => {
                       align={column.align}
                       style={{ minWidth: column.minWidth }}
                     >
-                      {column.label}
+                      <b>{column.label} </b>
                     </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
                 { data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
-                      {columns.map((column) => {
-                        if(column.id != "edit" && column.id!='delete'){
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                           {(column.id=="created_at" || column.id=="updated_at") ? date_parser(value) :value}
-                          
-                          </TableCell>
-                        )
-                        }
-                        else{
-                          return (
-                            <TableCell align={column.align}>
-                              {(column.id=="edit") && <Button variant="contained"  startIcon={<EditIcon/>} onClick={()=>setEdit(row._id)} style={{background:"#228B22"}}   id="btn-style">Edit</Button>}
-                              {(column.id=="delete") && <Button variant="contained" startIcon={<DeleteIcon />} onClick={()=>{remove({id:row._id})}} color="secondary"  id="btn-style">Delete</Button>}
-                            </TableCell>
-                          )
-                        }
-                      })}
-                    </TableRow>
-                  );
+                   return (<ShowROW row={row} shouldEdit={setEdit} del={remove}/>)
                 })}
               </TableBody>
             </Table>
@@ -180,4 +114,4 @@ const  StickyHeadTable = ({data, reload}) => {
         </div>
       }
 }
-export default StickyHeadTable;
+export default TodoList;

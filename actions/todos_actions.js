@@ -12,7 +12,6 @@ export const singleTodo = (id) => {
             return response.json();
         })
         .catch((err) => {
-            console.log(err) 
             return err
         });
 };
@@ -66,7 +65,6 @@ export const removeTodo = (id) => {
 }
  
 export const updateTodoDetails = (details)=>{
-    console.log(details, "updation")
     return fetch(`${process.env.NEXT_PUBLIC_API}/update`, {
         method: 'POST',
         headers: {

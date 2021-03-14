@@ -6,7 +6,6 @@ import {singleTodo, updateTodoDetails} from "../../actions/todos_actions";
 
 
 
-
 const EditForm = ({ id, reload,resetEdit}) =>{
       const [msg , setMessage] = useState("")
       const [todo, setTodo] = useState()

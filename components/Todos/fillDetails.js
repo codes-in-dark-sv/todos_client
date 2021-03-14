@@ -5,16 +5,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import {addTodo} from '../../actions/todos_actions';
 
 
-
-
-
 const fillform = ({type, setAction, reload}) =>{
       
       const {handleSubmit, errors, register, reset} = useForm();
-      const [msg , setMessage] = useState("")
+      const [msg , setMessage] = useState("");
 
       const formSubmit=(data)=>{
-            console.log(data, "form submit")
             addTodo(data).then(response => {
                   setMessage(response.msg)
                  
