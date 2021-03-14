@@ -41,6 +41,8 @@ const TodoPage =() =>{
                         <Button id="btn-style" variant="contained" color="primary" onClick={()=>setAction("add")}> Add Todo </Button>
                   </div>
             </div>  
+            
+
             <ListOfTodos data={todosList} reload={handleReload}/>
             {todoForm(actionType)}
             

@@ -3,16 +3,22 @@ import {useForm} from 'react-hook-form';
 import { Box, Dialog, DialogTitle, TextField,Divider,DialogContent, DialogActions, IconButton, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import {addTodo} from '../../actions/todos_actions';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 
 const fillform = ({type, setAction, reload}) =>{
       
       const {handleSubmit, errors, register, reset} = useForm();
       const [msg , setMessage] = useState("");
-
+      const [textValue, setTextValue] = useState("");
+      const [limit, setLimitMsg] = useState("") 
       const formSubmit=(data)=>{
+            data.text=textValue
             addTodo(data).then(response => {
                   setMessage(response.msg)
+                  setTextValue("")
                  
             }).catch((err) => {
                   setMessage(err.msg)
@@ -26,9 +32,43 @@ const fillform = ({type, setAction, reload}) =>{
           }
       } 
 
+      const handleText=(e)=>{
+            e.preventDefault()
+            var val = e.target.value
+            var l = val.length
+            if(l<=140){
+                  console.log(val)
+                  if(val.substr(-1).match(/[^a-zA-Z0-9 ]/g))
+                  { 
+                        val = val.substr(0,l-1)
+                        setLimitMsg("Can only insert alpha-numeric a-z or A-Z or 0-9")
+                  }
+
+                  else if(val[l-1]==" " && val[l-2]==" ") {
+                        l = val.length
+                        if(l>=2) {
+                              val = val.substr(0,l-1)
+                              setLimitMsg("Can't insert multiple spaces")
+                        }
+                  }
+                  
+                  setTextValue(val)
+            }
+            else{
+              setLimitMsg("You can't insert more than 140 charachters")
+            }
+            
+      }
+
       useEffect(()=>{
-      }, [errors, msg])
+      }, [errors, msg, textValue])
       
+      useEffect(()=>{
+            if(limit!=""){
+                  setTimeout(function(){ setLimitMsg("") }, 3000);
+            }
+      },[limit])
+
       return <div>
       
             <Dialog open={msg!==""}>
@@ -59,10 +99,14 @@ const fillform = ({type, setAction, reload}) =>{
                   <DialogContent>
 
                   <form onSubmit={handleSubmit(formSubmit)}>
+                        { limit!=""&& (<Alert severity="error">
+                              <strong>{limit}</strong>
+                        </Alert>)}
                         
-                        <Box display="flex" width="100%" p={1}>
-                              <Box width="70%" p={2}>
+                        <div style={{maxWidth:"500px", minWidth:"500px"}}>
+                              <Box display="flex" width="100%" p={2}>
                                     <TextField
+                                          style={{width:"450px"}}
                                           variant="outlined"
                                           name="title"
                                           label="Todo Title"
@@ -73,21 +117,22 @@ const fillform = ({type, setAction, reload}) =>{
                                           fullWidth
                                     />
                               </Box>
-                        </Box>
-                        <Box display="flex" width="100%" p={1}>
-                              <Box width="100%" p={2}>
-                                    <TextField
-                                          variant="outlined"
-                                          name="text"
-                                          label="About TODO"
-                                          placeholder="Enter the details about your todo"
-                                          inputRef={register()}
-                                          type="string"
-                                          fullWidth
+                        <Box display="flex" width="100%" p={2}>
+                                <TextareaAutosize
+                                          className="text-area-style"
+                                          rowsMax={10}
+                                          rowsMin={7}
+                                          value={textValue}
+                                          onChange={(e)=>{handleText(e)}}
+                                          aria-label="maximum height"
+                                          placeholder="Describe something about your todo"
+                                          
                                     />
-                              </Box>
             
                         </Box>
+                              
+                        </div>
+                        
                                     
                         <Box display="flex" width="100%" p={1}>
                                     <Box width="10%" p={2}>
