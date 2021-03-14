@@ -1,0 +1,41 @@
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+#btn-style{
+      font-size: 0.9em;
+      letter-spacing: 0.1em;
+      text-transform: none;
+      color: aliceblue;
+      font-weight: 600
+}
+
+#close-btn{
+      width:20px;
+      height:20px
+}
+#close-btn-pos{
+      position:absolute;
+      top:4px;
+      right:4px
+}
+
+.heading{
+      margin-top:20px;
+      margin-bottom: 40px;
+     
+}
+.heading #about{
+      font-size: 30px;
+}
+.heading #action{
+      position: relative;
+      margin-left: 80%;
+}
+
+#action,#about{
+      display: inline;
+}
