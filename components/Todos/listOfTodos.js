@@ -40,6 +40,7 @@ const  TodoList = ({data, query, setSearch,reload}) => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
   useEffect(()=>{
     if(msg!=""){
       setTimeout(function(){ setMessage("") }, 3000);
@@ -48,7 +49,7 @@ const  TodoList = ({data, query, setSearch,reload}) => {
   useEffect(()=>{
     if(data.length!=0)
       setFilter(data.filter((temp)=>{return (temp.title.toLowerCase()).indexOf(query)!=-1 }))
-  },[query])
+  },[query, data])
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
